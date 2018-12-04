@@ -28,6 +28,11 @@ public class Lectura {
                 contador++;
                 linea = br.readLine();
             }
+            posicionBomberman();
+            posicionEnemigo();
+            System.out.println(bombermanI+" "+bombermanJ);
+            System.out.println(enemigoI+" "+enemigoJ);
+            //imprime atriz en consola
             for (int x=0; x < mapa.length; x++) {
                     System.out.print("|");
                     for (int y=0; y < mapa[x].length; y++) {
@@ -38,6 +43,30 @@ public class Lectura {
         } catch (IOException | NumberFormatException e) {
             e.printStackTrace();
         }
+    }
+    
+    public void posicionBomberman(){
+        for (int x = 0; x < mapa.length;x++) {
+            for (int y = 0; y < mapa[x].length; y++) {
+                if(mapa[x][y]=='B'){
+                    mapa[x][y]='.';
+                    bombermanI=x;
+                    bombermanJ=y;
+                }
+            }   
+	}
+    }
+    
+    public void posicionEnemigo(){
+        for (int x = 0; x < mapa.length;x++) {
+            for (int y = 0; y < mapa[x].length; y++) {
+                if(mapa[x][y]=='E'){
+                    mapa[x][y]='#';
+                    enemigoI=x;
+                    enemigoJ=y;
+                }
+            }   
+	}
     }
     
     public BufferedReader getBuffered(String link){
@@ -75,5 +104,7 @@ public class Lectura {
         String[] columna=linea.split(" ");
         return columna.length;
     }
-    
+    public static void main(String[] args) {
+        Lectura l=new Lectura();
+    }
 }
