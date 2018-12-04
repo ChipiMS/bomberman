@@ -33,14 +33,16 @@ public class Busqueda {
                 }
             }
         }
-        for(int k = 0; k < camino.length; k++){
-            for(int i = 0; i < entrada.filas; i++){
-                for(int j = 0; j < entrada.columnas; j++){
-                    System.out.print(camino[k][i][j]);
+        if(camino != null){
+            for(int k = 0; k < camino.length; k++){
+                for(int i = 0; i < entrada.filas; i++){
+                    for(int j = 0; j < entrada.columnas; j++){
+                        System.out.print(camino[k][i][j]);
+                    }
+                    System.out.println();
                 }
                 System.out.println();
             }
-            System.out.println();
         }
     }
 
@@ -159,6 +161,7 @@ public class Busqueda {
     private boolean puedeAtacar(int bombermanI, int bombermanJ){
         boolean puede;
         int i, j;
+
         if(bombermanI == entrada.enemigoI){
             puede = true;
             for(j = Math.min(bombermanJ, entrada.enemigoJ)+1; j < Math.max(bombermanJ, entrada.enemigoJ); j++){
@@ -170,7 +173,7 @@ public class Busqueda {
                 return true;
             }
         }
-        if(bombermanJ == entrada.bombermanJ){
+        if(bombermanJ == entrada.enemigoJ){
             puede = true;
             for(i = Math.min(bombermanI, entrada.enemigoI)+1; i < Math.max(bombermanI, entrada.enemigoI); i++){
                 if(entrada.mapa[i][bombermanJ] == '#'){
