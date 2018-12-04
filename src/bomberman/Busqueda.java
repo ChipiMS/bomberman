@@ -6,6 +6,7 @@ public class Busqueda {
     boolean metaLograda;
     int n, m, factorPasos, factorManhattan;
     Paso ea;
+    char camino[][][];
     Busqueda(Lectura l){
         entrada = l;
         n = entrada.filas-2;
@@ -16,16 +17,13 @@ public class Busqueda {
         metaLograda = false;
         abiertos = new Abiertos(entrada.mapa);
         cerrados = new Cerrados(entrada.mapa);
-        entrada.bombermanI = 5;
-        entrada.bombermanJ = 2;
-        entrada.enemigoI = 3;
-        entrada.enemigoJ = 4;
         abiertos.abre(entrada.bombermanI, entrada.bombermanJ, 's', 0, null, g(0), f(entrada.bombermanI, entrada.bombermanJ, 's', g(0)), null);
         while(!abiertos.estaVacio() && !metaLograda){
             ea = abiertos.sacaPrimero();
             if(ea != null){
                 if(esMeta(ea)){
                     metaLograda = true;
+                    generaCamino(ea);
                 }
                 else{
                     analizaSucesor(ea.bombermanI+1, ea.bombermanJ, ea.estado, ea.pasos+1, ea.ataque, ea);
@@ -34,6 +32,15 @@ public class Busqueda {
                     analizaSucesor(ea.bombermanI, ea.bombermanJ-1, ea.estado, ea.pasos+1, ea.ataque, ea);
                 }
             }
+        }
+        for(int k = 0; k < camino.length; k++){
+            for(int i = 0; i < entrada.filas; i++){
+                for(int j = 0; j < entrada.columnas; j++){
+                    System.out.print(camino[k][i][j]);
+                }
+                System.out.println();
+            }
+            System.out.println();
         }
     }
 
@@ -115,8 +122,27 @@ public class Busqueda {
         return valor+g;
     }
     
-     int g(int pasos){
+    int g(int pasos){
         return factorPasos-pasos;
+    }
+
+    private void generaCamino(Paso ea){
+        int pasoActual = ea.pasos, i, j;
+        camino = new char[ea.pasos+1][entrada.filas][entrada.columnas];
+        while(ea != null){
+            for(i = 0; i < entrada.filas; i++){
+                for(j = 0; j < entrada.columnas; j++){
+                    camino[pasoActual][i][j] = entrada.mapa[i][j];
+                }
+            }
+            camino[pasoActual][entrada.enemigoI][entrada.enemigoJ] = 'E';
+            camino[pasoActual][ea.bombermanI][ea.bombermanJ] = 'B';
+            if(ea.ataque != null){
+                camino[pasoActual][ea.ataque.i][ea.ataque.j] = 'Q';
+            }
+            ea = ea.anterior;
+            pasoActual--;
+        }
     }
     
     final static int llaveEstado(char estado){
