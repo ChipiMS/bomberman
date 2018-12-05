@@ -3,10 +3,11 @@ public class Busqueda {
     Lectura entrada;
     Abiertos abiertos;
     Cerrados cerrados;
+    //Ventana ventana;
     boolean metaLograda;
     int n, m, factorPasos, factorManhattan;
     Paso ea;
-    char camino[][][];
+    public char camino[][][];
     Busqueda(Lectura l){
         entrada = l;
         n = entrada.filas-2;
@@ -17,6 +18,7 @@ public class Busqueda {
         metaLograda = false;
         abiertos = new Abiertos(entrada.mapa);
         cerrados = new Cerrados(entrada.mapa);
+        //ventana = new Ventana();
         abiertos.abre(entrada.bombermanI, entrada.bombermanJ, 's', 0, null, g(0), f(entrada.bombermanI, entrada.bombermanJ, 's', g(0)), null);
         while(!abiertos.estaVacio() && !metaLograda){
             ea = abiertos.sacaPrimero();
@@ -33,11 +35,18 @@ public class Busqueda {
                 }
             }
         }
-        if(camino != null){
+       
+    }
+    public void MuestraCamino(){
+         if(camino != null){
             for(int k = 0; k < camino.length; k++){
                 for(int i = 0; i < entrada.filas; i++){
                     for(int j = 0; j < entrada.columnas; j++){
                         System.out.print(camino[k][i][j]);
+                        //if ("#".equals(camino[k][i][j]))
+                        //{
+                            //ventana.pintaPared();
+                        //}
                     }
                     System.out.println();
                 }
@@ -45,7 +54,6 @@ public class Busqueda {
             }
         }
     }
-
     private void analizaSucesor(int bombermanI, int bombermanJ, char estado, int pasos, Ataque ataque, Paso anterior){
         if(entrada.mapa[bombermanI][bombermanJ] != '#'){
             if(estado == 's'){
