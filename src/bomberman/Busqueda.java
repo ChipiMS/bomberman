@@ -35,25 +35,9 @@ public class Busqueda {
                 }
             }
         }
-       
+        muestraCamino();
     }
-    public void MuestraCamino(){
-         if(camino != null){
-            for(int k = 0; k < camino.length; k++){
-                for(int i = 0; i < entrada.filas; i++){
-                    for(int j = 0; j < entrada.columnas; j++){
-                        System.out.print(camino[k][i][j]);
-                        //if ("#".equals(camino[k][i][j]))
-                        //{
-                            //ventana.pintaPared();
-                        //}
-                    }
-                    System.out.println();
-                }
-                System.out.println();
-            }
-        }
-    }
+    
     private void analizaSucesor(int bombermanI, int bombermanJ, char estado, int pasos, Ataque ataque, Paso anterior){
         if(entrada.mapa[bombermanI][bombermanJ] != '#'){
             if(estado == 's'){
@@ -138,7 +122,8 @@ public class Busqueda {
 
     private void generaCamino(Paso ea){
         int pasoActual = ea.pasos, i, j;
-        camino = new char[ea.pasos+1][entrada.filas][entrada.columnas];
+        Ataque ataque = null;
+        camino = new char[ea.pasos+3][entrada.filas][entrada.columnas];
         while(ea != null){
             for(i = 0; i < entrada.filas; i++){
                 for(j = 0; j < entrada.columnas; j++){
@@ -148,11 +133,33 @@ public class Busqueda {
             camino[pasoActual][entrada.enemigoI][entrada.enemigoJ] = 'E';
             camino[pasoActual][ea.bombermanI][ea.bombermanJ] = 'B';
             if(ea.ataque != null){
+                ataque = ea.ataque;
                 camino[pasoActual][ea.ataque.i][ea.ataque.j] = 'Q';
             }
             ea = ea.anterior;
             pasoActual--;
         }
+        pasoActual = camino.length-2;
+        for(i = 0; i < entrada.filas; i++){
+            for(j = 0; j < entrada.columnas; j++){
+                camino[pasoActual][i][j] = camino[pasoActual-1][i][j];
+                camino[pasoActual+1][i][j] = camino[pasoActual-1][i][j];
+            }
+        }
+        for(i = ataque.i; camino[pasoActual][i][ataque.j] != '#'; i--){
+            camino[pasoActual][i][ataque.j] = 'F';
+        }
+        for(i = ataque.i; camino[pasoActual][i][ataque.j] != '#'; i++){
+            camino[pasoActual][i][ataque.j] = 'F';
+        }
+        for(j = ataque.j; camino[pasoActual][ataque.i][j] != '#'; j--){
+            camino[pasoActual][ataque.i][j] = 'F';
+        }
+        for(j = ataque.j; camino[pasoActual][ataque.i][j] != '#'; j++){
+            camino[pasoActual][ataque.i][j] = 'F';
+        }
+        pasoActual++;
+        camino[pasoActual][entrada.enemigoI][entrada.enemigoJ] = '.';
     }
     
     final static int llaveEstado(char estado){
@@ -163,6 +170,24 @@ public class Busqueda {
                 return 1;
             default:
                 return 2;
+        }
+    }
+    
+    public void muestraCamino(){
+         if(camino != null){
+            for(int k = 0; k < camino.length; k++){
+                for(int i = 0; i < entrada.filas; i++){
+                    for(int j = 0; j < entrada.columnas; j++){
+                        System.out.print(camino[k][i][j]);
+                        //if ("#".equals(camino[k][i][j]))
+                        //{
+                            //ventana.pintaPared();
+                        //}
+                    }
+                    System.out.println();
+                }
+                System.out.println();
+            }
         }
     }
 

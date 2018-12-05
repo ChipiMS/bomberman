@@ -1,10 +1,12 @@
 package bomberman;
 
+import java.awt.Component;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import javax.swing.JFileChooser;
 
 public class Lectura {
     char mapa[][];
@@ -13,7 +15,13 @@ public class Lectura {
     
     public Lectura(){
         try {
-            String ruta = "mapa.txt";
+            JFileChooser chooser = new JFileChooser();
+            chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            File workingDirectory = new File(System.getProperty("user.dir"));
+            chooser.setCurrentDirectory(workingDirectory);
+            int result = chooser.showOpenDialog(null);
+            File file = chooser.getSelectedFile();
+            String ruta = file.getPath();
             BufferedReader br = getBuffered(ruta);
             String linea =  br.readLine();
             filas=filasTotales(ruta);

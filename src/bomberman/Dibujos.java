@@ -32,6 +32,14 @@ public class Dibujos {
         g.setColor(new Color(255, 255, 0));
         g.drawRect(x, y, x1, y1);
     }
+    public static void Fuego(Graphics g, String Dato, int x, int y, int x1, int y1) {
+        g.setColor(new Color(62, 81, 217));
+        g.fillRect(x, y, x1, y1);
+        g.setColor(new Color(255, 255, 0));
+        g.fillOval(x + 1, y + 1, 29, 29);
+        g.setColor(new Color(255, 255, 0));
+        g.drawRect(x, y, x1, y1);
+    }
 
     public static void Bomberman(Graphics g, String Dato, int x, int y, int x1, int y1) {
         g.setColor(new Color(62, 81, 217));

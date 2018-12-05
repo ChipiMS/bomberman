@@ -114,6 +114,10 @@ public class Ventana extends javax.swing.JFrame {
     public void pintaEnemigo(int x, int y) {
         Dibujos.Enemigo(this.getGraphics(), "", x, y, 30, 30);
     }
+    
+    public void pintaFuego(int x, int y) {
+        Dibujos.Fuego(this.getGraphics(), "", x, y, 30, 30);
+    }
 
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
@@ -167,6 +171,10 @@ public class Ventana extends javax.swing.JFrame {
 
                     if (String.valueOf(busqueda.camino[k][i][j]).equals("Q")) {
                         pintaBomba(x, y);
+                    }
+                    
+                    if (String.valueOf(busqueda.camino[k][i][j]).equals("F")) {
+                        pintaFuego(x, y);
                     }
                     x = x + 30;
                 }
